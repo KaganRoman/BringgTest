@@ -1,2 +1,2 @@
 # BringgTest
-Some homework
+Calculate distance matrix

@@ -4,6 +4,7 @@ import com.company.algo.AlgoLib;
 import com.company.algo.Point;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -61,5 +62,62 @@ class AlgoLibTest {
         var r = calcSimpleMatrix(points);
 
         assertTrue(checkEqual(m, r), "4x4 failed");
+    }
+
+    @org.junit.jupiter.api.Test
+    void calcDistanceMatrix4x4_2threads() {
+        var points = new ArrayList<Point>();
+        points.add(new Point(0, 0));
+        points.add(new Point(3, 4));
+        points.add(new Point(2, 2));
+        points.add(new Point(1.5, 12.2));
+        var m = AlgoLib.calcDistanceMatrix(points, 2);
+        var r = calcSimpleMatrix(points);
+
+        assertTrue(checkEqual(m, r), "4x4 two threads failed");
+    }
+
+    @org.junit.jupiter.api.Test
+    void calcDistanceMatrix5x5_3threads() {
+        var points = new ArrayList<Point>();
+        points.add(new Point(3, 4));
+        points.add(new Point(0, 0));
+        points.add(new Point(2, 2));
+        points.add(new Point(-19.2, 21));
+        points.add(new Point(1.5, 12.2));
+        var m = AlgoLib.calcDistanceMatrix(points, 3);
+        var r = calcSimpleMatrix(points);
+
+        assertTrue(checkEqual(m, r), "5x5 three threads failed");
+    }
+
+    @org.junit.jupiter.api.Test
+    void calcDistanceMatrix5x5_20threads() {
+        var points = new ArrayList<Point>();
+        points.add(new Point(3, 4));
+        points.add(new Point(0, 0));
+        points.add(new Point(2, 2));
+        points.add(new Point(-19.2, 21));
+        points.add(new Point(1.5, 12.2));
+        var m = AlgoLib.calcDistanceMatrix(points, 20);
+        var r = calcSimpleMatrix(points);
+
+        assertTrue(checkEqual(m, r), "5x5 twenty threads failed");
+    }
+
+    @org.junit.jupiter.api.Test
+    void calcDistanceMatrixAllCoverage() {
+        for(int threads = 0; threads < 4; ++threads) {
+            for(int size = 1; size < 20; ++size) {
+                var points = new ArrayList<Point>();
+                for(int i = 0; i < size; ++i) {
+                    points.add(new Point(Math.random()*100, Math.random()*100));
+                }
+                var m = AlgoLib.calcDistanceMatrix(points, threads);
+                var r = calcSimpleMatrix(points);
+
+                assertTrue(checkEqual(m, r), String.format("All coverage test failed, threads: %d, size: %d", threads, size));
+            }
+        }
     }
 }

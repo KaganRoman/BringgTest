@@ -28,12 +28,24 @@ public class AlgoLib {
 
         var threads = new ArrayList<Thread>();
 
-        int fromX = 0, fromY = 1, count = numOfCalculations/parallelDegree;
+        int currX = 0, currY = 1, totalCount = 0;
         for(int run = 0; run < parallelDegree; ++run) {
+            final int count = run == parallelDegree - 1 ? numOfCalculations - totalCount : numOfCalculations/parallelDegree;
+            final int fromX = currX;
+            final int fromY = currY;
+
             var t = new Thread(() -> calcMatrixPart(fromX, fromY, count, points, destMatrix));
             t.start();
             threads.add(t);
 
+            totalCount += count;
+            for(int c = 0; c < count; ++c) {
+                currY++;
+                if(currY == n) {
+                    currX++;
+                    currY = currX+1;
+                }
+            }
         }
         try {
             for(Thread t: threads)

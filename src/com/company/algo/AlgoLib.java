@@ -17,20 +17,31 @@ public class AlgoLib {
         if(points == null || points.size() == 0)
             throw new IllegalArgumentException("List of points should not be empty");
 
-        int n = points.size();
-        double[][] destMatrix = new double[n][n];
-
         // we have to made (n-1)+(n-2)+(n-3)+..+1 calculations in order to fill upper part of the matrix
+        int n = points.size();
         int numOfCalculations = n*(n-1)/2;
 
-        if(parallelDegree > numOfCalculations)
+        if(parallelDegree > numOfCalculations) // no need to run more threads than calculations
             parallelDegree = numOfCalculations;
+
+        var retVal = runCalculations(points, parallelDegree, numOfCalculations);
+        return retVal;
+    }
+
+    private static double[][] runCalculations(List<Point> points, int parallelDegree, int numOfCalculations) {
+        int n = points.size();
+
+        double[][] destMatrix = new double[n][n];
 
         var threads = new ArrayList<Thread>();
 
+        // for each thread we will calculate start point in the matrix,
+        // and how many calculations should be done when iterating sequentially
+        // Last run will complete also errors of rounds and may calculate more points
         int currX = 0, currY = 1, totalCount = 0;
         for(int run = 0; run < parallelDegree; ++run) {
-            final int count = run == parallelDegree - 1 ? numOfCalculations - totalCount : numOfCalculations/parallelDegree;
+            final int count = (run == parallelDegree - 1) ?
+                    numOfCalculations - totalCount : numOfCalculations/parallelDegree;
             final int fromX = currX;
             final int fromY = currY;
 
@@ -38,6 +49,7 @@ public class AlgoLib {
             t.start();
             threads.add(t);
 
+            // this is very lazy way to calculate next x and y
             totalCount += count;
             for(int c = 0; c < count; ++c) {
                 currY++;

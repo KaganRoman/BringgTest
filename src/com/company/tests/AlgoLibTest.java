@@ -107,8 +107,8 @@ class AlgoLibTest {
 
     @org.junit.jupiter.api.Test
     void calcDistanceMatrixAllCoverage() {
-        for(int threads = 0; threads < 4; ++threads) {
-            for(int size = 1; size < 20; ++size) {
+        for(int threads = 0; threads < 6; ++threads) {
+            for(int size = 1; size < 200; ++size) {
                 var points = new ArrayList<Point>();
                 for(int i = 0; i < size; ++i) {
                     points.add(new Point(Math.random()*100, Math.random()*100));

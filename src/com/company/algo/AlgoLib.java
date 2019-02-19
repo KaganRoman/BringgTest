@@ -9,6 +9,22 @@ public class AlgoLib {
 
         double[][] destMatrix = new double[points.size()][points.size()];
 
+        // naive
+        var xIter = points.listIterator();
+        while(xIter.hasNext()) {
+            int x = xIter.nextIndex();
+            var p1 = xIter.next();
+            var yIter = points.listIterator(x+1);
+            while(yIter.hasNext())
+            {
+                int y = yIter.nextIndex();
+                var p2 = yIter.next();
+                var distance = p1.findDistance(p2);
+                destMatrix[x][y] = distance;
+                destMatrix[y][x] = distance;
+            }
+        }
+
         return destMatrix;
     }
 }

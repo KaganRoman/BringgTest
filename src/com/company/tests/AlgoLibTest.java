@@ -1,5 +1,6 @@
 package com.company.tests;
 
+import com.company.algo.AlgoLib;
 import com.company.algo.Point;
 
 import java.util.ArrayList;
@@ -19,7 +20,21 @@ class AlgoLibTest {
         return result;
     }
 
+    static boolean checkEqual(double[][] p1, double[][] p2) {
+        for(int i = 0; i < p1.length; ++i)
+            for(int j = 0; j < p1.length; ++j)
+                if(p1[i][j] != p2[i][j]) return false;
+        return true;
+    }
+
     @org.junit.jupiter.api.Test
-    void calcDistanceMatrix() {
+    void calcDistanceMatrix2x2() {
+        var points = new ArrayList<Point>();
+        points.add(new Point(0, 0));
+        points.add(new Point(3, 4));
+        var m = AlgoLib.calcDistanceMatrix(points, 1);
+        var r = calcSimpleMatrix(points);
+
+        assertTrue(checkEqual(m, r), "2x2 failed");
     }
 }

@@ -37,4 +37,29 @@ class AlgoLibTest {
 
         assertTrue(checkEqual(m, r), "2x2 failed");
     }
+
+    @org.junit.jupiter.api.Test
+    void calcDistanceMatrix3x3() {
+        var points = new ArrayList<Point>();
+        points.add(new Point(0, 0));
+        points.add(new Point(3, 4));
+        points.add(new Point(2, 2));
+        var m = AlgoLib.calcDistanceMatrix(points, 1);
+        var r = calcSimpleMatrix(points);
+
+        assertTrue(checkEqual(m, r), "3x3 failed");
+    }
+
+    @org.junit.jupiter.api.Test
+    void calcDistanceMatrix4x4() {
+        var points = new ArrayList<Point>();
+        points.add(new Point(0, 0));
+        points.add(new Point(3, 4));
+        points.add(new Point(2, 2));
+        points.add(new Point(1.5, 12.2));
+        var m = AlgoLib.calcDistanceMatrix(points, 1);
+        var r = calcSimpleMatrix(points);
+
+        assertTrue(checkEqual(m, r), "4x4 failed");
+    }
 }
